@@ -11,5 +11,33 @@
                     text: "Settings"
                     on_press: app.open_settings()
 
-    Label:
-        text: "hello YOUTUBE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+
+    ScreenManager:
+        id: kivy_screen_manger
+        StartScreen:
+            name: "start_screen"
+
+
+<StartScreen@Screen>:
+    BoxLayout:
+        # Settingsf
+        orientation: "vertical"
+        padding: root.width * .02, root.height * .02
+        spacing: min(root.width, root.height) * .02
+
+        Label:
+            text: "[b]Kivy Math Tutor[/b]"
+            markup: True
+
+        Button:
+            text: "Addition"
+        Button:
+            text: "Subtraction"
+        Button:
+            text: "Multiplication"
+        Button:
+            text: "Division"
+        Button:
+            text: "Mix!"
+        Button:
+            text: "About this App"
