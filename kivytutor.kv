@@ -19,9 +19,12 @@
 
 
     ScreenManager:
-        id: kivy_screen_manger
+        id: kivy_screen_manager
         StartScreen:
             name: "start_screen"
+        AboutScreen:
+            id: about_screen
+            name: "about_screen"
 
 
 <StartScreen@Screen>:
@@ -47,6 +50,7 @@
             text: "Mix!"
         Button:
             text: "About this App"
+            on_release: app.root.changeScreen(self.text.lower())
 
 <AboutScreen@Screen>:
     BoxLayout:
