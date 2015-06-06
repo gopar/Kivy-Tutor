@@ -1,3 +1,9 @@
+<WrappedLabel@Label>:
+    size_hint_y: None
+    height: self.texture_size[1] + (self.texture_size[1]/2)
+    markup: True
+
+
 <KivyTutorRoot>:
     orientation: "vertical"
 
@@ -20,14 +26,14 @@
 
 <StartScreen@Screen>:
     BoxLayout:
-        # Settingsf
+        # Settings
         orientation: "vertical"
         padding: root.width * .02, root.height * .02
         spacing: min(root.width, root.height) * .02
 
-        Label:
+        WrappedLabel:
             text: "[b]Kivy Math Tutor[/b]"
-            markup: True
+            font_size: min(root.height, root.width) / 10
 
         Button:
             text: "Addition"
@@ -41,3 +47,15 @@
             text: "Mix!"
         Button:
             text: "About this App"
+
+<AboutScreen@Screen>:
+    BoxLayout:
+        padding: root.width * .02, root.height * .02
+        Label:
+            text: app.getText()
+            halign: "center"
+            markup: True
+            font_size: root.height / 20
+            text_size: self.width, None
+            center_y: .5
+            on_ref_press: app.on_ref_press(*args)
