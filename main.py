@@ -4,6 +4,7 @@ from __future__ import print_function, unicode_literals
 import webbrowser
 
 from kivy.app import App
+from kivy.core.window import Window
 from kivy.uix.boxlayout import BoxLayout
 
 
@@ -14,13 +15,29 @@ class KivyTutorRoot(BoxLayout):
     """
     def __init__(self, **kwargs):
         super(KivyTutorRoot, self).__init__(**kwargs)
+        # List of previous screens
+        self.screen_list = []
 
     def changeScreen(self, next_screen):
         operations = "addition subtraction multiplication division".split()
         question = None
 
+        # If screen is not already in the list fo prevous screens
+        if self.ids.kivy_screen_manager.current not in self.screen_list:
+            self.screen_list.append(self.ids.kivy_screen_manager.current)
+
         if next_screen == "about this app":
             self.ids.kivy_screen_manager.current = "about_screen"
+
+    def onBackBtn(self):
+        # Check if there are any scresn to go back to
+        if self.screen_list:
+            # if there are screens we can go back to, the just do it
+            self.ids.kivy_screen_manager.current = self.screen_list.pop()
+            # Saw we don't want to close
+            return True
+        # No more screens to go back to
+        return False
 
 
 ################################################################################
@@ -30,6 +47,12 @@ class KivyTutorApp(App):
     """
     def __init__(self, **kwargs):
         super(KivyTutorApp, self).__init__(**kwargs)
+        Window.bind(on_keyboard=self.onBackBtn)
+
+    def onBackBtn(self, window, key, *args):
+        # user presses back button
+        if key == 27:
+            return self.root.onBackBtn()
 
     def build(self):
         return KivyTutorRoot()
