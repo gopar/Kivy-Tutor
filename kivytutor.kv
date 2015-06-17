@@ -6,6 +6,8 @@
 
 <KivyTutorRoot>:
     orientation: "vertical"
+    kivy_screen_manager: kivy_screen_manager
+    math_screen: math_screen
 
     ActionBar:
         ActionView:
@@ -17,7 +19,6 @@
                     text: "Settings"
                     on_press: app.open_settings()
 
-
     ScreenManager:
         id: kivy_screen_manager
         StartScreen:
@@ -25,7 +26,9 @@
         AboutScreen:
             id: about_screen
             name: "about_screen"
-
+        MathScreen:
+            id: math_screen
+            name: "math_screen"
 
 <StartScreen@Screen>:
     BoxLayout:
@@ -40,17 +43,48 @@
 
         Button:
             text: "Addition"
+            on_release: app.root.changeScreen(self.text.lower())
         Button:
             text: "Subtraction"
+            on_release: app.root.changeScreen(self.text.lower())
         Button:
             text: "Multiplication"
+            on_release: app.root.changeScreen(self.text.lower())
         Button:
             text: "Division"
+            on_release: app.root.changeScreen(self.text.lower())
         Button:
             text: "Mix!"
+            on_release: app.root.changeScreen(self.text.lower())
         Button:
             text: "About this App"
             on_release: app.root.changeScreen(self.text.lower())
+
+<MathScreen>:
+    question_text: question_text
+    answer_text: answer_text
+    BoxLayout:
+        orientation: "vertical"
+        padding: root.width * .02, root.height * .02
+        spacing: 10
+        WrappedLabel:
+            id: question_text
+            text: "some dummy text"
+            font_size: min(root.height, root.width) / 10
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            WrappedLabel:
+                id: answer_text
+                text: ""
+                font_size: min(root.height, root.width) / 10
+            Button:
+                id: clearn_btn
+                text: "[b]Clear[/b]"
+                markup: True
+                size_hint: .3, None
+                height: question_text.texture_size[1]
+                on_release: answer_text.text = ""
 
 <AboutScreen@Screen>:
     BoxLayout:
