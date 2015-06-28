@@ -2,6 +2,7 @@ from __future__ import division, absolute_import
 from __future__ import print_function, unicode_literals
 
 import webbrowser
+import random
 
 from kivy.app import App
 from kivy.core.window import Window
@@ -23,6 +24,7 @@ class KivyTutorRoot(BoxLayout):
         super(KivyTutorRoot, self).__init__(**kwargs)
         # List of previous screens
         self.screen_list = []
+        self.is_mix = False
 
     def changeScreen(self, next_screen):
         operations = "addition subtraction multiplication division".split()
@@ -35,8 +37,31 @@ class KivyTutorRoot(BoxLayout):
         if next_screen == "about this app":
             self.ids.kivy_screen_manager.current = "about_screen"
         else:
-            self.math_screen.question_text.text = next_screen
+            if next_screen == "mix!":
+                self.is_mix = True
+                index = random.randint(0, len(operations) - 1)
+                next_screen = operations[index]
+            else:
+                self.is_mix = False
+            for operation in operations:
+                if next_screen == operation:
+                    question = "self.math_screen.get_{}_question()".format(
+                        operation
+                    )
+            self.math_screen.question_text.text = KivyTutorRoot.prepQuestion(
+                eval(question) if question is not None else None
+            )
             self.ids.kivy_screen_manager.current = "math_screen"
+
+    @staticmethod
+    def prepQuestion(question):
+        " Prepares a math question with markup "
+        if question is None:
+            return "ERROR"
+        text_list = question.split()
+        text_list.insert(2, "[b]")
+        text_list.insert(len(text_list), "[/b]")
+        return " ".join(text_list)
 
     def onBackBtn(self):
         # Check if there are any scresn to go back to
