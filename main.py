@@ -5,8 +5,10 @@ import webbrowser
 import random
 
 from kivy.app import App
+from kivy.uix.button import Button
 from kivy.core.window import Window
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 
@@ -81,6 +83,46 @@ class MathScreen(Screen, Arithmetic):
     """
     def __init__(self, *args, **kwargs):
         super(MathScreen, self).__init__(*args, **kwargs)
+
+
+################################################################################
+class KeyPad(GridLayout):
+    """Documentation for KeyPad
+
+    """
+    def __init__(self, *args, **kwargs):
+        super(KeyPad, self).__init__(*args, **kwargs)
+        self.cols = 3
+        self.spacing = 10
+        self.createButtons()
+
+    def createButtons(self):
+        _list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "", "GO!"]
+        for num in _list:
+            self.add_widget(Button(text=str(num), on_release=self.onBtnPress))
+
+    def onBtnPress(self, btn):
+        math_screen = App.get_running_app().root.ids.math_screen
+        answer_text = math_screen.answer_text
+
+        if btn.text.isdigit():
+            answer_text.text += btn.text
+        if btn.text == "GO!" and answer_text.text != "":
+            answer = math_screen.get_answer()
+            root = App.get_running_app().root
+            if int(answer_text.text) == answer:
+                # TODO: Change when we create math popup
+                print("YEY")
+            else:
+                # TODO: Change when we create math popup
+                print("BOOOO")
+            # Clear the answer text
+            answer_text.text = ""
+            # Prepare to get new question
+            question = math_screen.question_text
+            question.text = root.prepQuestion(
+                math_screen.get_next_question(True if root.is_mix else False)
+            )
 
 
 ################################################################################
