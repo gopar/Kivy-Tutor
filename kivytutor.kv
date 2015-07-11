@@ -87,6 +87,32 @@
                 on_release: answer_text.text = ""
         KeyPad:
 
+<MathPopup>:
+    size_hint: .8, .8
+    title: "Result"
+    title_size: root.height * .05
+    auto_dissmiss: False
+    message: message
+    wrapped_button: wrapped_button
+    BoxLayout:
+        orientation: "vertical"
+        padding: root.width * .02, root.height * .02
+        spacing: min(root.width, root.height) * .02
+        Label:
+            id: message
+            text: "sldkjfskldjflsdjfkljdslfj"
+            halign: "center"
+            markup: True
+            font_size: root.height / 10
+            text_size: self.width, None
+            center_y: .5
+        Button:
+            id: wrapped_button
+            text: "Close"
+            size_hint: 1, None
+            height: root.height / 8
+            on_release: root.dismiss()
+
 <AboutScreen@Screen>:
     BoxLayout:
         padding: root.width * .02, root.height * .02

@@ -5,6 +5,8 @@ import webbrowser
 import random
 
 from kivy.app import App
+from kivy.clock import Clock
+from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.core.window import Window
 from kivy.uix.boxlayout import BoxLayout
@@ -27,6 +29,7 @@ class KivyTutorRoot(BoxLayout):
         # List of previous screens
         self.screen_list = []
         self.is_mix = False
+        self.math_popup = MathPopup()
 
     def changeScreen(self, next_screen):
         operations = "addition subtraction multiplication division".split()
@@ -86,6 +89,51 @@ class MathScreen(Screen, Arithmetic):
 
 
 ################################################################################
+class MathPopup(Popup):
+    """Popup for telling user whether he got it right or wrong
+    """
+
+    GOOD = "{} :D"
+    BAD = "{}, Correct answer is [b]{}[/b]"
+    GOOD_LIST = "Awesome! Amazing! Excellent! Correct!".split()
+    BAD_LIST = ["Almost!", "Close!", "Sorry", "Don't Worry"]
+
+    message = ObjectProperty()
+    wrapped_button = ObjectProperty()
+
+    def __init__(self, *args, **kwargs):
+        super(MathPopup, self).__init__(*args, **kwargs)
+
+    def open(self, correct=True):
+        # If answer is correct take off button if its visible
+        if correct:
+            if self.wrapped_button in self.content.children:
+                self.content.remove_widget(self.wrapped_button)
+        # If answers is wrong, display button if not visible
+        else:
+            if self.wrapped_button not in self.content.children:
+                self.content.add_widget(self.wrapped_button)
+
+        # Set up text message
+        self.message.text = self._prep_text(correct)
+
+        # display popup
+        super(MathPopup, self).open()
+        if correct:
+            Clock.schedule_once(self.dismiss, 1)
+
+    def _prep_text(self, correct):
+        if correct:
+            index = random.randint(0, len(self.GOOD_LIST) - 1)
+            return self.GOOD.format(self.GOOD_LIST[index])
+        else:
+            index = random.randint(0, len(self.BAD_LIST) - 1)
+            math_screen = App.get_running_app().root.math_screen
+            answer = math_screen.get_answer()
+            return self.BAD.format(self.BAD_LIST[index], answer)
+
+
+################################################################################
 class KeyPad(GridLayout):
     """Documentation for KeyPad
 
@@ -111,11 +159,9 @@ class KeyPad(GridLayout):
             answer = math_screen.get_answer()
             root = App.get_running_app().root
             if int(answer_text.text) == answer:
-                # TODO: Change when we create math popup
-                print("YEY")
+                root.math_popup.open(True)
             else:
-                # TODO: Change when we create math popup
-                print("BOOOO")
+                root.math_popup.open(False)
             # Clear the answer text
             answer_text.text = ""
             # Prepare to get new question
