@@ -1,8 +1,21 @@
+#:import COLOR kivy.utils.get_color_from_hex
+#:set RED "#F94A69"
+#:set GREEN "#06A5AB"
+
 <WrappedLabel@Label>:
     size_hint_y: None
     height: self.texture_size[1] + (self.texture_size[1]/2)
     markup: True
+    font_name: "Roboto"
 
+<Button>:
+    font_name: "Roboto"
+    font_size: min(self.height, self.width) / 4
+    bold: True
+    background_normal: "./images/button_normal.png"
+    background_down: "./images/button_down.png"
+    background_color: COLOR("#0066BA")
+    border: (2, 2, 2, 2)
 
 <KivyTutorRoot>:
     orientation: "vertical"
@@ -56,9 +69,11 @@
         Button:
             text: "Mix!"
             on_release: app.root.changeScreen(self.text.lower())
+            background_color: COLOR(GREEN)
         Button:
             text: "About this App"
             on_release: app.root.changeScreen(self.text.lower())
+            background_color: COLOR(RED)
 
 <MathScreen>:
     question_text: question_text
@@ -81,6 +96,7 @@
             Button:
                 id: clearn_btn
                 text: "[b]Clear[/b]"
+                background_color: COLOR(RED)
                 markup: True
                 size_hint: .3, None
                 height: question_text.texture_size[1]
@@ -91,6 +107,7 @@
     size_hint: .8, .8
     title: "Result"
     title_size: root.height * .05
+    seperator_color: COLOR(GREEN)
     auto_dissmiss: False
     message: message
     wrapped_button: wrapped_button

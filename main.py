@@ -9,13 +9,25 @@ from kivy.clock import Clock
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.core.window import Window
+from kivy.core.text import LabelBase
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
+from kivy.utils import get_color_from_hex
 
 from arithmetic import Arithmetic
 from json_settings import json_settings
+
+# Color the background
+Window.clearcolor = get_color_from_hex("#16203B")
+
+# Register fonts
+LabelBase.register(
+    name="Roboto",
+    fn_regular="./fonts/Roboto-Thin.ttf",
+    fn_bold="./fonts/Roboto-Medium.ttf"
+)
 
 
 ################################################################################
