@@ -37,6 +37,7 @@ class KivyTutorRoot(BoxLayout):
     """
     math_screen = ObjectProperty(None)
 
+    # --------------------------------------------------------------------------
     def __init__(self, **kwargs):
         super(KivyTutorRoot, self).__init__(**kwargs)
         # List of previous screens
@@ -44,6 +45,7 @@ class KivyTutorRoot(BoxLayout):
         self.is_mix = False
         self.math_popup = MathPopup()
 
+    # --------------------------------------------------------------------------
     def changeScreen(self, next_screen):
         operations = "addition subtraction multiplication division".split()
         question = None
@@ -71,6 +73,7 @@ class KivyTutorRoot(BoxLayout):
             )
             self.ids.kivy_screen_manager.current = "math_screen"
 
+    # --------------------------------------------------------------------------
     @staticmethod
     def prepQuestion(question):
         " Prepares a math question with markup "
@@ -81,6 +84,7 @@ class KivyTutorRoot(BoxLayout):
         text_list.insert(len(text_list), "[/b]")
         return " ".join(text_list)
 
+    # --------------------------------------------------------------------------
     def onBackBtn(self):
         # Check if there are any scresn to go back to
         if self.screen_list:
@@ -97,6 +101,8 @@ class MathScreen(Screen, Arithmetic):
     """Widget that will arc as a screen and hold funcs for math questions
 
     """
+
+    # --------------------------------------------------------------------------
     def __init__(self, *args, **kwargs):
         super(MathScreen, self).__init__(*args, **kwargs)
 
@@ -114,9 +120,11 @@ class MathPopup(Popup):
     message = ObjectProperty()
     wrapped_button = ObjectProperty()
 
+    # --------------------------------------------------------------------------
     def __init__(self, *args, **kwargs):
         super(MathPopup, self).__init__(*args, **kwargs)
 
+    # --------------------------------------------------------------------------
     def open(self, correct=True):
         # If answer is correct take off button if its visible
         if correct:
@@ -135,6 +143,7 @@ class MathPopup(Popup):
         if correct:
             Clock.schedule_once(self.dismiss, 1)
 
+    # --------------------------------------------------------------------------
     def _prep_text(self, correct):
         if correct:
             index = random.randint(0, len(self.GOOD_LIST) - 1)
@@ -151,17 +160,20 @@ class KeyPad(GridLayout):
     """Documentation for KeyPad
 
     """
+    # --------------------------------------------------------------------------
     def __init__(self, *args, **kwargs):
         super(KeyPad, self).__init__(*args, **kwargs)
         self.cols = 3
         self.spacing = 10
         self.createButtons()
 
+    # --------------------------------------------------------------------------
     def createButtons(self):
         _list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "", "GO!"]
         for num in _list:
             self.add_widget(Button(text=str(num), on_release=self.onBtnPress))
 
+    # --------------------------------------------------------------------------
     def onBtnPress(self, btn):
         math_screen = App.get_running_app().root.ids.math_screen
         answer_text = math_screen.answer_text
@@ -189,19 +201,23 @@ class KivyTutorApp(App):
     """App object
 
     """
+    # --------------------------------------------------------------------------
     def __init__(self, **kwargs):
         super(KivyTutorApp, self).__init__(**kwargs)
         self.use_kivy_settings = False
         Window.bind(on_keyboard=self.onBackBtn)
 
+    # --------------------------------------------------------------------------
     def onBackBtn(self, window, key, *args):
         # user presses back button
         if key == 27:
             return self.root.onBackBtn()
 
+    # --------------------------------------------------------------------------
     def build(self):
         return KivyTutorRoot()
 
+    # --------------------------------------------------------------------------
     def getText(self):
         return ("Hey There!\nThis App was built using"
                 "[b][ref=kivy]kivy[/ref][/b]\n"
@@ -210,6 +226,7 @@ class KivyTutorApp(App):
                 "This app is under the [b][ref=mit]MIT License[/ref][/b]\n"
                 "My site: [b][ref=website]PyGopar.com[/ref][/b]")
 
+    # --------------------------------------------------------------------------
     def on_ref_press(self, instance, ref):
         _dict = {
             "source": "https://github.com/gopar/Kivy-Tutor",
@@ -220,13 +237,16 @@ class KivyTutorApp(App):
 
         webbrowser.open(_dict[ref])
 
+    # --------------------------------------------------------------------------
     def build_config(self, config):
         config.setdefaults("General", {"lower_num": 0, "upper_num": 10})
 
+    # --------------------------------------------------------------------------
     def build_settings(self, settings):
         settings.add_json_panel("Kivy Math Tutor", self.config,
                                 data=json_settings)
 
+    # --------------------------------------------------------------------------
     def on_config_change(self, config, section, key, value):
         if key == "upper_num":
             self.root.math_screen.max_num = int(value)
