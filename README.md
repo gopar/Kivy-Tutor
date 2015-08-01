@@ -13,3 +13,7 @@ Things that people might want to add to practice Kivy programming
 - Ads?
 - Check that the upper limit is always higher than the lower limit.
 - Maybe some animations instead of a boring popup?
+
+LICENSE
+=======
+[MIT License](LICENSE.md)
