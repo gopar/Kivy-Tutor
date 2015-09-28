@@ -21,6 +21,8 @@ LICENSE
 
 Screen shots
 ============
-![Menu](./images/menu.png)
-![question](./images/question.png)
-![error](./images/error.png)
+<img src="./images/menu.png" width="600" height="1000">
+
+<img src="./images/question.png" width="600" height="1000">
+
+<img src="./images/error.png" width="600" height="1000">
