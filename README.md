@@ -17,3 +17,10 @@ Things that people might want to add to practice Kivy programming
 LICENSE
 =======
 [MIT License](LICENSE.md)
+
+
+Screen shots
+============
+![Menu](./images/menu.png)
+![question](./images/question.png)
+![error](./images/error.png)
